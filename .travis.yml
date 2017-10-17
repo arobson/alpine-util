@@ -1,0 +1,14 @@
+sudo: required
+dist: trusty
+env:
+  - VERSION_TAG=1.0.0
+jobs:
+  include:
+    - stage: build image
+      script:
+        - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+        - docker build -t alpine-util .
+        - docker tag alpine-util $DOCKER_USERNAME/alpine-util:latest
+        - docker tag alpine-util $DOCKER_USERNAME/alpine-util:$VERSION_TAG
+        - docker push $DOCKER_USERNAME/alpine-util:latest
+        - docker push $DOCKER_USERNAME/alpine-util:$VERSION_TAG
